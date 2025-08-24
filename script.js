@@ -57,19 +57,38 @@ function loadTasks() {
 }
 
 // Main init
-document.addEventListener('DOMContentLoaded', () => {
-    const addButton = document.getElementById('add-task-btn');
-    const taskInput = document.getElementById('task-input');
+document.addEventListener("DOMContentLoaded", function () {
+    const taskInput = document.getElementById("taskInput");
+    const addButton = document.getElementById("addButton");
+    const taskList = document.getElementById("taskList");
 
-    // Load stored tasks
-    loadTasks();
+    function addTask() {
+        const taskText = taskInput.value.trim();
 
-    // Button adds task
-    addButton.addEventListener('click', () => addTask());
+        if (taskText !== "") {
+            const li = document.createElement("li");
+            li.textContent = taskText;
 
-    // Enter key adds task
-    taskInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.className = "remove-btn";
+
+            removeButton.onclick = function () {
+                taskList.removeChild(li);
+            };
+
+            li.appendChild(removeButton);
+            taskList.appendChild(li);
+
+            taskInput.value = "";
+        }
+    }
+
+    // Event listeners
+    addButton.addEventListener("click", addTask);
+
+    taskInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
             addTask();
         }
     });
